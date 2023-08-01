@@ -8,7 +8,6 @@ let users = [];
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
 const found = users.filter((user) => user.username === username);
-
 if (found.length>0) {
     return true;
 }
@@ -45,18 +44,19 @@ regd_users.post("/login", (req, res) => {
     return res.status(208).json({message: "Invalid Login. Check username and password"});
   }
 });
+
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
   const isbn = req.params.isbn;
-  const review = req.params.review;
+  const review = req.body.review;
   const username = req.session.authorization.username;
   console.log("Add Review: ", req.params, req.body, req.session);
   if (books[isbn])
   {
       let book = books[isbn];
       book.reviews[username] = review;
-      return res.status(200).send( `Review of the book with the ISBN ${isbn} is updated with ${req.params.review} by ${username}`);
+      return res.status(200).send( `Review of the book with the ISBN ${isbn} is updated with ${review} by ${username}`);
 
     }
 else
@@ -83,4 +83,3 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
-
